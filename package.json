@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "check": "tsc -b --pretty false"
+    "check": "tsc -b --pretty false",
+    "fetch:history": "node scripts/fetch-history.mjs"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
@@ -16,5 +17,8 @@
     "react": "latest",
     "react-dom": "latest"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest"
+  }
 }
