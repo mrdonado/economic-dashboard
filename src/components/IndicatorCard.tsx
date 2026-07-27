@@ -1,4 +1,5 @@
 import type { Indicator } from '../types'
+import { HistoryChart } from './HistoryChart'
 
 const trendSymbol = { up: '↑', down: '↓', flat: '—' }
 
@@ -15,6 +16,7 @@ export function IndicatorCard({ indicator }: { indicator: Indicator }) {
         </span>
       </div>
       <p className="value">{indicator.value}</p>
+      <HistoryChart indicatorId={indicator.id} label={indicator.name} />
       <div className="card-footer">
         <span className={`change change--${indicator.trend}`}>{indicator.change}</span>
         <span>{indicator.description}</span>

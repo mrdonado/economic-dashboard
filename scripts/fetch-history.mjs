@@ -11,7 +11,7 @@ import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
-const OUTPUT_DIR = join(ROOT, 'data', 'history')
+const OUTPUT_DIR = join(ROOT, 'public', 'data', 'history')
 const START_DATE = '1950-01-01'
 const TODAY = isoDate(new Date())
 
