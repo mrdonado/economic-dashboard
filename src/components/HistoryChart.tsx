@@ -3,6 +3,12 @@ import { useMemo, useState } from 'react'
 type Range = '1M' | '6M' | 'YTD' | '5Y' | 'Max'
 
 interface HistoryPoint { date: string; value: number }
+interface HistoryChartProps {
+  history: HistoryPoint[] | null
+  label: string
+  compact?: boolean
+  onOpen?: () => void
+}
 
 const ranges: Range[] = ['1M', '6M', 'YTD', '5Y', 'Max']
 
@@ -28,16 +34,17 @@ function linePath(points: HistoryPoint[]) {
   }).join(' ')
 }
 
-export function HistoryChart({ history, label }: { history: HistoryPoint[] | null; label: string }) {
+export function HistoryChart({ history, label, compact = false, onOpen }: HistoryChartProps) {
   const [range, setRange] = useState<Range>('6M')
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const activeRange = compact ? '6M' : range
 
   const points = useMemo(() => {
     if (!history?.length) return []
     const end = new Date(`${history.at(-1)?.date}T00:00:00Z`)
-    const start = startFor(range, end)
-    return range === 'Max' ? history : history.filter((point) => new Date(`${point.date}T00:00:00Z`) >= start)
-  }, [history, range])
+    const start = startFor(activeRange, end)
+    return activeRange === 'Max' ? history : history.filter((point) => new Date(`${point.date}T00:00:00Z`) >= start)
+  }, [activeRange, history])
   const path = useMemo(() => linePath(points), [points])
   const movement = points.length > 1 ? points[points.length - 1].value - points[0].value : 0
   const hoveredPoint = hoveredIndex === null ? null : points[hoveredIndex]
@@ -53,18 +60,29 @@ export function HistoryChart({ history, label }: { history: HistoryPoint[] | nul
     setHoveredIndex(Math.round(position * (points.length - 1)))
   }
 
+  function openChart() {
+    if (compact) onOpen?.()
+  }
+
   return (
-    <div className="history-chart">
-      <div className="range-picker" aria-label={`${label} chart period`}>
+    <div
+      className={compact ? 'history-chart history-chart--compact' : 'history-chart history-chart--large'}
+      role={compact ? 'button' : undefined}
+      tabIndex={compact ? 0 : undefined}
+      aria-label={compact ? `Open ${label} chart` : undefined}
+      onClick={openChart}
+      onKeyDown={(event) => { if (compact && (event.key === 'Enter' || event.key === ' ')) openChart() }}
+    >
+      {!compact && <div className="range-picker" aria-label={`${label} chart period`}>
         {ranges.map((item) => <button key={item} className={range === item ? 'selected' : ''} onClick={() => setRange(item)}>{item}</button>)}
-      </div>
+      </div>}
       {history === null ? <div className="chart-message">Loading history…</div>
         : points.length < 2 ? <div className="chart-message">No history for this period</div>
           : <div className="chart-plot">
             <svg
               viewBox="0 0 100 50"
               role="img"
-              aria-label={`${label}, ${range} historical chart`}
+              aria-label={`${label}, ${activeRange} historical chart`}
               preserveAspectRatio="none"
               onMouseMove={(event) => selectNearestPoint(event.clientX, event.currentTarget)}
               onMouseLeave={() => setHoveredIndex(null)}
@@ -73,7 +91,7 @@ export function HistoryChart({ history, label }: { history: HistoryPoint[] | nul
               <path className={movement >= 0 ? 'chart-line positive' : 'chart-line negative'} d={path} />
               {hoveredPoint && <>
                 <path className="chart-guide" d={`M ${hoveredX} 0 V 50`} />
-                <circle className={movement >= 0 ? 'chart-marker positive' : 'chart-marker negative'} cx={hoveredX} cy={hoveredY} r="2.1" />
+                <circle className={movement >= 0 ? 'chart-marker positive' : 'chart-marker negative'} cx={hoveredX} cy={hoveredY} r={compact ? '2.1' : '1.35'} />
               </>}
             </svg>
             {hoveredPoint && <div className="chart-tooltip" style={{ left: `${hoveredX}%` }}>

@@ -38,6 +38,8 @@ function formatLatestValue(indicator: Indicator, value: number) {
 
 export function IndicatorCard({ indicator }: { indicator: Indicator }) {
   const [history, setHistory] = useState<HistoryPoint[] | null>(null)
+  const [expanded, setExpanded] = useState(false)
+  const [closing, setClosing] = useState(false)
   const latestPoint = history?.at(-1)
   const shownValue = latestPoint ? formatLatestValue(indicator, latestPoint.value) : indicator.value
 
@@ -50,26 +52,69 @@ export function IndicatorCard({ indicator }: { indicator: Indicator }) {
     return () => { active = false }
   }, [indicator.id])
 
+  useEffect(() => {
+    if (!expanded) return
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === 'Escape') closeExpanded()
+    }
+    document.addEventListener('keydown', closeOnEscape)
+    return () => document.removeEventListener('keydown', closeOnEscape)
+  }, [expanded])
+
+  function openExpanded() {
+    setClosing(false)
+    setExpanded(true)
+  }
+
+  function closeExpanded() {
+    if (closing) return
+    setClosing(true)
+    window.setTimeout(() => {
+      setExpanded(false)
+      setClosing(false)
+    }, 220)
+  }
+
   return (
-    <article className="indicator-card">
-      <div className="card-heading">
-        <div>
-          <p className="symbol">{indicator.symbol}</p>
-          <h3>{indicator.name}</h3>
+    <>
+      <article className="indicator-card">
+        <div className="card-heading">
+          <div>
+            <p className="symbol">{indicator.symbol}</p>
+            <h3>{indicator.name}</h3>
+          </div>
+          <span className={`trend trend--${indicator.trend}`} aria-label={`${indicator.trend} trend`}>
+            {trendSymbol[indicator.trend]}
+          </span>
         </div>
-        <span className={`trend trend--${indicator.trend}`} aria-label={`${indicator.trend} trend`}>
-          {trendSymbol[indicator.trend]}
-        </span>
-      </div>
-      <div className="value-row">
-        <p className="value">{shownValue}</p>
-        {latestPoint && <span className="latest-date">as of {latestPoint.date}</span>}
-      </div>
-      <HistoryChart history={history} label={indicator.name} />
-      <div className="card-footer">
-        <span className={`change change--${indicator.trend}`}>{indicator.change}</span>
-        <span>{indicator.description}</span>
-      </div>
-    </article>
+        <div className="value-row">
+          <p className="value">{shownValue}</p>
+          {latestPoint && <span className="latest-date">{latestPoint.date}</span>}
+        </div>
+        <HistoryChart compact history={history} label={indicator.name} onOpen={openExpanded} />
+      </article>
+
+      {expanded && <div className={`chart-modal${closing ? ' chart-modal--closing' : ''}`} role="dialog" aria-modal="true" aria-label={`${indicator.name} expanded chart`} onClick={closeExpanded}>
+        <div className="chart-modal-panel" onClick={(event) => event.stopPropagation()}>
+          <div className="chart-modal-heading">
+            <div>
+              <p className="symbol">{indicator.symbol}</p>
+              <h2>{indicator.name}</h2>
+              <p>{indicator.description}</p>
+            </div>
+            <button className="modal-close" type="button" aria-label="Close expanded chart" onClick={closeExpanded}>Close</button>
+          </div>
+          <div className="modal-latest">
+            <span>Latest value</span>
+            <strong>{shownValue}</strong>
+            {latestPoint && <small>{latestPoint.date}</small>}
+          </div>
+          <div className="modal-stats">
+            <span className={`change change--${indicator.trend}`}>{indicator.change}</span>
+          </div>
+          <HistoryChart history={history} label={indicator.name} />
+        </div>
+      </div>}
+    </>
   )
 }

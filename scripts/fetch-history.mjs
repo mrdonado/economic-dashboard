@@ -34,7 +34,7 @@ const SERIES = [
   { id: 'bitcoin', label: 'Bitcoin', source: 'yahoo', symbol: 'BTC-USD', unit: 'USD' },
   { id: 'fear-greed-crypto', label: 'Crypto Fear & Greed', source: 'alternative-me', symbol: 'FNG', unit: '0-100 index' },
   { id: 'liquidity', label: 'US M2 money stock', source: 'fred', symbol: 'M2SL', unit: 'billions USD' },
-  { id: 'us10y', label: 'US 10Y Treasury yield', source: 'fred', symbol: 'DGS10', unit: 'percent' },
+  { id: 'us10y', label: 'US 10Y Treasury yield', source: 'fred', symbol: 'DGS10', unit: 'percent', minExclusive: 0 },
   { id: 'yield-spread', label: 'US 10Y-2Y Treasury spread', source: 'fred', symbol: 'T10Y2Y', unit: 'percentage points' },
   { id: 'cpi-yoy', label: 'US CPI YoY', source: 'fred', symbol: 'CPIAUCSL', unit: 'percent', transform: 'yoy' },
   { id: 'unemployment', label: 'US unemployment rate', source: 'fred', symbol: 'UNRATE', unit: 'percent' },
@@ -103,6 +103,10 @@ function yearOverYear(points) {
   }).filter((point) => Number.isFinite(point.value))
 }
 
+function validValueFor(series, value) {
+  return Number.isFinite(value) && (series.minExclusive === undefined || value > series.minExclusive)
+}
+
 async function fredObservations(series, from) {
   const { symbol, transform } = series
   const url = `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${encodeURIComponent(symbol)}&cos=Close&coed=${TODAY}`
@@ -111,9 +115,11 @@ async function fredObservations(series, from) {
   const lines = (await response.text()).trim().split(/\r?\n/)
   const points = lines.slice(1).map((line) => {
     const divider = line.indexOf(',')
-    return { date: line.slice(0, divider), value: Number(line.slice(divider + 1)) }
-  }).filter((point) => Number.isFinite(point.value))
-  return (transform === 'yoy' ? yearOverYear(points) : points).filter((point) => point.date >= from)
+    const rawValue = line.slice(divider + 1).trim()
+    return { date: line.slice(0, divider), value: rawValue && rawValue !== '.' ? Number(rawValue) : Number.NaN }
+  }).filter((point) => validValueFor(series, point.value))
+  return (transform === 'yoy' ? yearOverYear(points) : points)
+    .filter((point) => point.date >= from && validValueFor(series, point.value))
 }
 
 async function eiaObservations(symbol, from) {
@@ -156,7 +162,7 @@ function compact(observations, missing) {
 async function updateSeries(series) {
   const path = join(OUTPUT_DIR, `${series.id}.json`)
   const existing = await getJson(path, { version: 1, series, points: [], unavailableBuckets: [] })
-  const points = new Map(existing.points.map((point) => [point.date, point]))
+  const points = new Map(existing.points.filter((point) => validValueFor(series, point.value)).map((point) => [point.date, point]))
   const unavailable = new Set(existing.unavailableBuckets ?? [])
   const missing = new Set(ALL_BUCKETS.filter((bucket) => !points.has(bucket) && !unavailable.has(bucket)))
 
