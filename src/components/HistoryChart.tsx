@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 type Range = '1M' | '6M' | 'YTD' | '5Y' | 'Max'
 
 interface HistoryPoint { date: string; value: number }
-interface HistoryFile { points: HistoryPoint[] }
 
 const ranges: Range[] = ['1M', '6M', 'YTD', '5Y', 'Max']
 
@@ -29,19 +28,9 @@ function linePath(points: HistoryPoint[]) {
   }).join(' ')
 }
 
-export function HistoryChart({ indicatorId, label }: { indicatorId: string; label: string }) {
+export function HistoryChart({ history, label }: { history: HistoryPoint[] | null; label: string }) {
   const [range, setRange] = useState<Range>('6M')
-  const [history, setHistory] = useState<HistoryPoint[] | null>(null)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-
-  useEffect(() => {
-    let active = true
-    fetch(`/data/history/${indicatorId}.json`)
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error('History unavailable')))
-      .then((data: HistoryFile) => active && setHistory(data.points))
-      .catch(() => active && setHistory([]))
-    return () => { active = false }
-  }, [indicatorId])
 
   const points = useMemo(() => {
     if (!history?.length) return []

@@ -23,7 +23,9 @@ h3 { margin: 0; font-size: 1rem; letter-spacing: -.02em; }
 .trend--up, .change--up { color: #62d7a1; } .trend--up { background: #163a32; }
 .trend--down, .change--down { color: #ff8c9c; } .trend--down { background: #3e202b; }
 .trend--flat, .change--flat { color: #aeb9cf; } .trend--flat { background: #293044; }
-.value { margin: 16px 0 8px; font-size: clamp(1.45rem, 3vw, 2rem); font-weight: 700; letter-spacing: -.05em; }
+.value-row { display: flex; flex-wrap: wrap; gap: 7px 9px; align-items: baseline; margin: 16px 0 8px; }
+.value { margin: 0; font-size: clamp(1.45rem, 3vw, 2rem); font-weight: 700; letter-spacing: -.05em; }
+.latest-date { padding: 3px 6px; border: 1px solid #31394d; border-radius: 999px; color: #91a5c9; background: #0b1120; font: 500 .58rem/1 'DM Mono', monospace; white-space: nowrap; }
 .card-footer { color: #7f8ba4; font-size: .73rem; } .change { font: 500 .78rem 'DM Mono', monospace; white-space: nowrap; }
 .history-chart { min-height: 91px; margin: 0 0 12px; } .range-picker { display: flex; gap: 4px; margin-bottom: 6px; }
 .range-picker button { border: 0; border-radius: 4px; padding: 3px 5px; color: #7f8ba4; background: transparent; cursor: pointer; font: 500 .62rem/1 'DM Mono', monospace; }
