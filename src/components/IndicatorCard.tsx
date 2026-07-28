@@ -20,6 +20,14 @@ function formatLatestValue(indicator: Indicator, value: number) {
     return `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(value / 1_000)}M bbl`
   }
 
+  if (['us10y', 'cpi-yoy', 'unemployment'].includes(indicator.id)) {
+    return `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(value)}%`
+  }
+
+  if (['yield-spread', 'hy-spread'].includes(indicator.id)) {
+    return `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 }).format(value)} pp`
+  }
+
   const formatted = new Intl.NumberFormat(undefined, {
     maximumFractionDigits: indicator.id === 'bitcoin' ? 0 : 2,
     minimumFractionDigits: indicator.id === 'bitcoin' ? 0 : 2,

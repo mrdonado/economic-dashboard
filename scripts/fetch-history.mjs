@@ -22,13 +22,23 @@ const SERIES = [
   { id: 'brent', label: 'Brent crude', source: 'yahoo', symbol: 'BZ=F', unit: 'USD/barrel' },
   { id: 'gold', label: 'Gold', source: 'yahoo', symbol: 'GC=F', unit: 'USD/troy ounce' },
   { id: 'silver', label: 'Silver', source: 'yahoo', symbol: 'SI=F', unit: 'USD/troy ounce' },
+  { id: 'copper', label: 'Copper', source: 'yahoo', symbol: 'HG=F', unit: 'USD/pound' },
+  { id: 'wti', label: 'WTI crude', source: 'yahoo', symbol: 'CL=F', unit: 'USD/barrel' },
   { id: 'sp500', label: 'S&P 500', source: 'yahoo', symbol: '^GSPC', unit: 'index points' },
+  { id: 'nasdaq100', label: 'Nasdaq 100', source: 'yahoo', symbol: '^NDX', unit: 'index points' },
+  { id: 'vix', label: 'VIX', source: 'yahoo', symbol: '^VIX', unit: 'index points' },
+  { id: 'dxy', label: 'US Dollar Index', source: 'yahoo', symbol: 'DX-Y.NYB', unit: 'index points' },
   { id: 'nikkei', label: 'Nikkei 225', source: 'yahoo', symbol: '^N225', unit: 'index points' },
   { id: 'dax', label: 'DAX', source: 'yahoo', symbol: '^GDAXI', unit: 'index points' },
   { id: 'ibex', label: 'IBEX 35', source: 'yahoo', symbol: '^IBEX', unit: 'index points' },
   { id: 'bitcoin', label: 'Bitcoin', source: 'yahoo', symbol: 'BTC-USD', unit: 'USD' },
   { id: 'fear-greed-crypto', label: 'Crypto Fear & Greed', source: 'alternative-me', symbol: 'FNG', unit: '0-100 index' },
   { id: 'liquidity', label: 'US M2 money stock', source: 'fred', symbol: 'M2SL', unit: 'billions USD' },
+  { id: 'us10y', label: 'US 10Y Treasury yield', source: 'fred', symbol: 'DGS10', unit: 'percent' },
+  { id: 'yield-spread', label: 'US 10Y-2Y Treasury spread', source: 'fred', symbol: 'T10Y2Y', unit: 'percentage points' },
+  { id: 'cpi-yoy', label: 'US CPI YoY', source: 'fred', symbol: 'CPIAUCSL', unit: 'percent', transform: 'yoy' },
+  { id: 'unemployment', label: 'US unemployment rate', source: 'fred', symbol: 'UNRATE', unit: 'percent' },
+  { id: 'hy-spread', label: 'US high-yield credit spread', source: 'fred', symbol: 'BAMLH0A0HYM2', unit: 'percentage points' },
   { id: 'oil-reserves', label: 'US Strategic Petroleum Reserve', source: 'eia', symbol: 'WCSSTUS1', unit: 'million barrels' },
 ]
 
@@ -84,15 +94,26 @@ async function yahooObservations(symbol, from) {
   })).filter((point) => Number.isFinite(point.value))
 }
 
-async function fredObservations(symbol, from) {
+function yearOverYear(points) {
+  const valueByDate = new Map(points.map((point) => [point.date, point.value]))
+  return points.map((point) => {
+    const priorDate = `${Number(point.date.slice(0, 4)) - 1}${point.date.slice(4)}`
+    const prior = valueByDate.get(priorDate)
+    return { date: point.date, value: prior ? ((point.value / prior) - 1) * 100 : Number.NaN }
+  }).filter((point) => Number.isFinite(point.value))
+}
+
+async function fredObservations(series, from) {
+  const { symbol, transform } = series
   const url = `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${encodeURIComponent(symbol)}&cos=Close&coed=${TODAY}`
   const response = await fetch(url)
   if (!response.ok) throw new Error(`FRED request failed (${response.status}) for ${symbol}`)
   const lines = (await response.text()).trim().split(/\r?\n/)
-  return lines.slice(1).map((line) => {
+  const points = lines.slice(1).map((line) => {
     const divider = line.indexOf(',')
     return { date: line.slice(0, divider), value: Number(line.slice(divider + 1)) }
-  }).filter((point) => point.date >= from && Number.isFinite(point.value))
+  }).filter((point) => Number.isFinite(point.value))
+  return (transform === 'yoy' ? yearOverYear(points) : points).filter((point) => point.date >= from)
 }
 
 async function eiaObservations(symbol, from) {
@@ -140,6 +161,11 @@ async function updateSeries(series) {
   const missing = new Set(ALL_BUCKETS.filter((bucket) => !points.has(bucket) && !unavailable.has(bucket)))
 
   if (missing.size === 0) {
+    if (JSON.stringify(existing.series) !== JSON.stringify(series)) {
+      await writeFile(path, `${JSON.stringify({ ...existing, series, generatedAt: new Date().toISOString() }, null, 2)}\n`)
+      console.log(`${series.id}: metadata updated`)
+      return
+    }
     console.log(`${series.id}: already complete`)
     return
   }
@@ -147,7 +173,7 @@ async function updateSeries(series) {
   const from = [...missing].sort()[0]
   console.log(`${series.id}: requesting ${missing.size} missing buckets from ${from}`)
   const observed = series.source === 'yahoo' ? await yahooObservations(series.symbol, from)
-    : series.source === 'fred' ? await fredObservations(series.symbol, from)
+    : series.source === 'fred' ? await fredObservations(series, from)
       : series.source === 'alternative-me' ? await alternativeMeObservations(series.symbol, from)
         : await eiaObservations(series.symbol, from)
   const found = compact(observed, missing)
