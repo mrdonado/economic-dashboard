@@ -20,7 +20,7 @@ export default function App() {
           <h1>Economic dashboard</h1>
           <p className="subtitle">A focused view of the signals that move the world economy.</p>
         </div>
-        <div className="updated"><span className="status-dot" />Sample data · Updated today</div>
+        <div className="updated"><span className="status-dot" />Bundled JSON data · Latest dates shown per card</div>
       </header>
 
       <nav className="filters" aria-label="Indicator categories">
@@ -35,7 +35,7 @@ export default function App() {
         {visibleIndicators.map((indicator) => <IndicatorCard key={indicator.id} indicator={indicator} />)}
       </section>
 
-      <footer>Data values are illustrative. Connect a provider in <code>src/data/indicators.ts</code> to display live figures.</footer>
+      <footer>Indicator values are loaded from bundled history files in <code>public/data/history</code>.</footer>
     </main>
   )
 }

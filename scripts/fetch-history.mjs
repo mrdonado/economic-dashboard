@@ -16,15 +16,18 @@ const START_DATE = '1950-01-01'
 const TODAY = isoDate(new Date())
 
 // Yahoo Finance supplies traded instruments. FRED supplies the liquidity proxy;
-// the SPR series comes directly from the EIA's public weekly-stocks API.
+// Alternative.me supplies crypto sentiment; the SPR series comes directly from
+// the EIA's public weekly-stocks API.
 const SERIES = [
   { id: 'brent', label: 'Brent crude', source: 'yahoo', symbol: 'BZ=F', unit: 'USD/barrel' },
   { id: 'gold', label: 'Gold', source: 'yahoo', symbol: 'GC=F', unit: 'USD/troy ounce' },
+  { id: 'silver', label: 'Silver', source: 'yahoo', symbol: 'SI=F', unit: 'USD/troy ounce' },
   { id: 'sp500', label: 'S&P 500', source: 'yahoo', symbol: '^GSPC', unit: 'index points' },
   { id: 'nikkei', label: 'Nikkei 225', source: 'yahoo', symbol: '^N225', unit: 'index points' },
   { id: 'dax', label: 'DAX', source: 'yahoo', symbol: '^GDAXI', unit: 'index points' },
   { id: 'ibex', label: 'IBEX 35', source: 'yahoo', symbol: '^IBEX', unit: 'index points' },
   { id: 'bitcoin', label: 'Bitcoin', source: 'yahoo', symbol: 'BTC-USD', unit: 'USD' },
+  { id: 'fear-greed-crypto', label: 'Crypto Fear & Greed', source: 'alternative-me', symbol: 'FNG', unit: '0-100 index' },
   { id: 'liquidity', label: 'US M2 money stock', source: 'fred', symbol: 'M2SL', unit: 'billions USD' },
   { id: 'oil-reserves', label: 'US Strategic Petroleum Reserve', source: 'eia', symbol: 'WCSSTUS1', unit: 'million barrels' },
 ]
@@ -110,6 +113,16 @@ async function eiaObservations(symbol, from) {
     .filter((point) => Number.isFinite(point.value))
 }
 
+async function alternativeMeObservations(_symbol, from) {
+  const response = await fetch('https://api.alternative.me/fng/?limit=0&format=json')
+  if (!response.ok) throw new Error(`Alternative.me request failed (${response.status})`)
+  const payload = await response.json()
+  return (payload.data ?? []).map((point) => ({
+    date: isoDate(new Date(Number(point.timestamp) * 1000)),
+    value: Number(point.value),
+  })).filter((point) => point.date >= from && Number.isFinite(point.value))
+}
+
 function compact(observations, missing) {
   const newestValueByBucket = new Map()
   for (const point of observations) {
@@ -135,7 +148,8 @@ async function updateSeries(series) {
   console.log(`${series.id}: requesting ${missing.size} missing buckets from ${from}`)
   const observed = series.source === 'yahoo' ? await yahooObservations(series.symbol, from)
     : series.source === 'fred' ? await fredObservations(series.symbol, from)
-      : await eiaObservations(series.symbol, from)
+      : series.source === 'alternative-me' ? await alternativeMeObservations(series.symbol, from)
+        : await eiaObservations(series.symbol, from)
   const found = compact(observed, missing)
   for (const [bucket, point] of found) points.set(bucket, { date: bucket, value: point.value, observedAt: point.date })
   for (const bucket of missing) if (!found.has(bucket)) unavailable.add(bucket)

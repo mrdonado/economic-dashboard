@@ -8,6 +8,10 @@ interface HistoryPoint { date: string; value: number }
 interface HistoryFile { points: HistoryPoint[] }
 
 function formatLatestValue(indicator: Indicator, value: number) {
+  if (indicator.id.startsWith('fear-greed-')) {
+    return `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 }).format(value)}/100`
+  }
+
   if (indicator.id === 'liquidity') {
     return `$${new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(value / 1_000)}T`
   }
