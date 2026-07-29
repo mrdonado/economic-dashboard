@@ -1,4 +1,5 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import type { FormEvent, PointerEvent } from 'react'
 import { IndicatorCard } from './components/IndicatorCard'
 import { indicators } from './data/indicators'
 
@@ -61,7 +62,7 @@ export default function App() {
   const [location, setLocation] = useState(readSavedLocation)
   const [locationInput, setLocationInput] = useState(readSavedLocation)
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false)
-  const [weather, setWeather] = useState<{ place: string; temperature: number; apparent: number; summary: string } | null>(null)
+  const [weather, setWeather] = useState<{ place: string; temperature: number; apparent: number; summary: string; latitude: number; longitude: number } | null>(null)
   const [weatherStatus, setWeatherStatus] = useState<'idle' | 'loading' | 'error'>('idle')
   const hiddenIndicators = useMemo(() => new Set(hiddenIndicatorIds), [hiddenIndicatorIds])
   const visibleIndicators = useMemo(
@@ -102,6 +103,8 @@ export default function App() {
           temperature: weatherData.current.temperature_2m,
           apparent: weatherData.current.apparent_temperature,
           summary: weatherSummary(weatherData.current.weather_code),
+          latitude: place.latitude,
+          longitude: place.longitude,
         })
         setWeatherStatus('idle')
       } catch {
@@ -143,8 +146,10 @@ export default function App() {
   return (
     <main className="page-shell">
       <section className="start-panel" aria-label="Start page summary">
-        <div className="time-block">
+        <div className="date-block">
           <p className="start-day">{weekday}</p>
+        </div>
+        <div className="time-block">
           <p className="start-time">{time}</p>
         </div>
         <div className="weather-card">
@@ -154,10 +159,11 @@ export default function App() {
             <p className="weather-value">{weather ? `${Math.round(weather.temperature)}°C` : weatherStatus === 'loading' ? 'Loading…' : 'Unavailable'}</p>
             {weather && <p className="weather-detail">{weather.summary} · feels {Math.round(weather.apparent)}°C</p>}
           </div>
-          <button className="location-trigger" type="button" onClick={() => setIsLocationModalOpen(true)}>
+          <div className="location-widget">
+            <WorldLocation latitude={weather?.latitude} longitude={weather?.longitude} />
             <span>{weather?.place ?? location}</span>
-            Change
-          </button>
+            <button className="location-trigger" type="button" onClick={() => setIsLocationModalOpen(true)}>Change</button>
+          </div>
         </div>
       </section>
 
@@ -211,4 +217,56 @@ function weatherIcon(summary?: string) {
   if (summary === 'Snow') return '❄'
   if (summary === 'Storm') return 'ϟ'
   return '☁'
+}
+
+function WorldLocation({ latitude, longitude }: { latitude?: number; longitude?: number }) {
+  const [dragStart, setDragStart] = useState<{ pointerX: number; pointerY: number; offsetX: number; offsetY: number } | null>(null)
+  const [offset, setOffset] = useState({ x: 0, y: 0 })
+  const [returning, setReturning] = useState(false)
+  const longitudePosition = longitude === undefined ? 0.5 : (longitude + 180) / 360
+  const latitudePosition = latitude === undefined ? 0.5 : (90 - latitude) / 180
+  const mapWidth = 220
+  const mapHeight = mapWidth * (620 / 950)
+  const mapLeft = 50 - longitudePosition * mapWidth
+  const mapTop = 50 - latitudePosition * mapHeight
+
+  function startDrag(event: PointerEvent<HTMLSpanElement>) {
+    event.currentTarget.setPointerCapture(event.pointerId)
+    setReturning(false)
+    setDragStart({ pointerX: event.clientX, pointerY: event.clientY, offsetX: offset.x, offsetY: offset.y })
+  }
+
+  function drag(event: PointerEvent<HTMLSpanElement>) {
+    if (!dragStart) return
+    setOffset({
+      x: dragStart.offsetX + event.clientX - dragStart.pointerX,
+      y: Math.max(-24, Math.min(24, dragStart.offsetY + event.clientY - dragStart.pointerY)),
+    })
+  }
+
+  function release() {
+    if (!dragStart) return
+    setDragStart(null)
+    setReturning(true)
+    setOffset({ x: 0, y: 0 })
+    window.setTimeout(() => setReturning(false), 520)
+  }
+
+  return (
+    <span
+      className={`world-globe${returning ? ' world-globe--returning' : ''}`}
+      role="img"
+      aria-label="Interactive globe centered on selected weather location"
+      onPointerDown={startDrag}
+      onPointerMove={drag}
+      onPointerUp={release}
+      onPointerCancel={release}
+    >
+      <span className="world-globe__shine" />
+      <span
+        className="world-globe__map"
+        style={{ left: `calc(${mapLeft}% + ${offset.x}px)`, top: `calc(${mapTop}% + ${offset.y}px)` }}
+      />
+    </span>
+  )
 }
