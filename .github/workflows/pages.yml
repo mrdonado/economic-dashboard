@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -39,6 +39,18 @@ jobs:
 
       - name: Update history JSON
         run: npm run fetch:history
+
+      - name: Commit updated history JSON
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/history/*.json
+          if git diff --cached --quiet; then
+            echo "No history updates to commit"
+          else
+            git commit -m "Update history data [skip ci]"
+            git push
+          fi
 
       - name: Build
         run: npm run build
