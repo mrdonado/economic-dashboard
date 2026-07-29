@@ -77,7 +77,7 @@ export function IndicatorCard({ indicator, isHidden, onVisibilityToggle }: Indic
 
   useEffect(() => {
     let active = true
-    fetch(`/data/history/${indicator.id}.json`)
+    fetch(`${import.meta.env.BASE_URL}data/history/${indicator.id}.json`)
       .then((response) => response.ok ? response.json() : Promise.reject(new Error('History unavailable')))
       .then((data: HistoryFile) => active && setHistory(data.points))
       .catch(() => active && setHistory([]))
