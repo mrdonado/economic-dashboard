@@ -7,6 +7,17 @@ const trendSymbol = { up: '↑', down: '↓', flat: '—' }
 interface HistoryPoint { date: string; value: number }
 interface HistoryFile { points: HistoryPoint[] }
 
+function formatSigned(value: number, formatter: (value: number) => string) {
+  if (value === 0) return formatter(0)
+  const sign = value > 0 ? '+' : '-'
+  return `${sign}${formatter(Math.abs(value))}`
+}
+
+function formatPercentDistance(value: number, reference: number) {
+  if (reference === 0) return null
+  return formatSigned((value / Math.abs(reference)) * 100, (amount) => `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(amount)}%`)
+}
+
 function formatLatestValue(indicator: Indicator, value: number) {
   if (indicator.id.startsWith('fear-greed-')) {
     return `${new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 }).format(value)}/100`
@@ -36,12 +47,33 @@ function formatLatestValue(indicator: Indicator, value: number) {
   return indicator.value.startsWith('$') ? `$${formatted}` : formatted
 }
 
-export function IndicatorCard({ indicator }: { indicator: Indicator }) {
+interface IndicatorCardProps {
+  indicator: Indicator
+  isHidden: boolean
+  onVisibilityToggle: () => void
+}
+
+export function IndicatorCard({ indicator, isHidden, onVisibilityToggle }: IndicatorCardProps) {
   const [history, setHistory] = useState<HistoryPoint[] | null>(null)
   const [expanded, setExpanded] = useState(false)
   const [closing, setClosing] = useState(false)
   const latestPoint = history?.at(-1)
   const shownValue = latestPoint ? formatLatestValue(indicator, latestPoint.value) : indicator.value
+  const values = history?.map((point) => point.value) ?? []
+  const historicalMax = values.length ? Math.max(...values) : null
+  const twelveMonthStart = latestPoint ? new Date(`${latestPoint.date}T00:00:00Z`) : null
+  twelveMonthStart?.setFullYear(twelveMonthStart.getFullYear() - 1)
+  const twelveMonthValues = history?.filter((point) => {
+    if (!twelveMonthStart) return false
+    return new Date(`${point.date}T00:00:00Z`) >= twelveMonthStart
+  }).map((point) => point.value) ?? []
+  const twelveMonthMin = twelveMonthValues.length ? Math.min(...twelveMonthValues) : null
+  const distanceFromMin = latestPoint && twelveMonthMin !== null ? latestPoint.value - twelveMonthMin : null
+  const distanceFromMax = latestPoint && historicalMax !== null ? latestPoint.value - historicalMax : null
+  const percentFromMin = distanceFromMin !== null && twelveMonthMin !== null ? formatPercentDistance(distanceFromMin, twelveMonthMin) : null
+  const percentFromMax = distanceFromMax !== null && historicalMax !== null ? formatPercentDistance(distanceFromMax, historicalMax) : null
+  const isAtTwelveMonthMin = latestPoint && twelveMonthMin !== null && latestPoint.value === twelveMonthMin
+  const isAtHistoricalMax = latestPoint && historicalMax !== null && latestPoint.value === historicalMax
 
   useEffect(() => {
     let active = true
@@ -77,20 +109,27 @@ export function IndicatorCard({ indicator }: { indicator: Indicator }) {
 
   return (
     <>
-      <article className="indicator-card">
+      <article className={`indicator-card indicator-card--${indicator.category.toLowerCase()}${isHidden ? ' indicator-card--hidden' : ''}`}>
         <div className="card-heading">
           <div>
             <p className="symbol">{indicator.symbol}</p>
             <h3>{indicator.name}</h3>
           </div>
-          <span className={`trend trend--${indicator.trend}`} aria-label={`${indicator.trend} trend`}>
-            {trendSymbol[indicator.trend]}
-          </span>
+          <div className="card-actions">
+            <button className="visibility-toggle" type="button" onClick={onVisibilityToggle}>{isHidden ? 'Show' : 'Hide'}</button>
+            <span className={`trend trend--${indicator.trend}`} aria-label={`${indicator.trend} trend`}>
+              {trendSymbol[indicator.trend]}
+            </span>
+          </div>
         </div>
         <div className="value-row">
           <p className="value">{shownValue}</p>
           {latestPoint && <span className="latest-date">{latestPoint.date}</span>}
         </div>
+        {percentFromMin !== null && percentFromMax !== null && <div className="range-distance" aria-label={`${indicator.name} distance from historical range`}>
+          <span className={isAtTwelveMonthMin ? 'range-distance__min range-distance__min--active' : 'range-distance__min'} title="Distance from 12-month minimum" aria-label={`${percentFromMin} from 12-month minimum`}>{percentFromMin}</span>
+          <span className={isAtHistoricalMax ? 'range-distance__max range-distance__max--active' : 'range-distance__max'} title="Distance from historical maximum" aria-label={`${percentFromMax} from historical maximum`}>{percentFromMax}</span>
+        </div>}
         <HistoryChart compact history={history} label={indicator.name} onOpen={openExpanded} />
       </article>
 
@@ -111,7 +150,13 @@ export function IndicatorCard({ indicator }: { indicator: Indicator }) {
           </div>
           <div className="modal-stats">
             <span className={`change change--${indicator.trend}`}>{indicator.change}</span>
+            {twelveMonthMin !== null && <span>12M min {formatLatestValue(indicator, twelveMonthMin)}</span>}
+            {historicalMax !== null && <span>Max {formatLatestValue(indicator, historicalMax)}</span>}
           </div>
+          {percentFromMin !== null && percentFromMax !== null && <div className="range-distance range-distance--large" aria-label={`${indicator.name} distance from historical range`}>
+            <span className={isAtTwelveMonthMin ? 'range-distance__min range-distance__min--active' : 'range-distance__min'} title="Distance from 12-month minimum" aria-label={`${percentFromMin} from 12-month minimum`}>{percentFromMin}</span>
+            <span className={isAtHistoricalMax ? 'range-distance__max range-distance__max--active' : 'range-distance__max'} title="Distance from historical maximum" aria-label={`${percentFromMax} from historical maximum`}>{percentFromMax}</span>
+          </div>}
           <HistoryChart history={history} label={indicator.name} />
         </div>
       </div>}

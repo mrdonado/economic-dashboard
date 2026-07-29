@@ -7,6 +7,6 @@ export interface Indicator {
   value: string
   change: string
   trend: Trend
-  category: 'Markets' | 'Commodities' | 'Macro'
+  category: 'Macro' | 'Stocks' | 'Commodities' | 'Crypto'
   description: string
 }
