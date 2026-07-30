@@ -7,7 +7,7 @@
     "symbol": "UNRATE",
     "unit": "percent"
   },
-  "generatedAt": "2026-07-29T18:39:27.577Z",
+  "generatedAt": "2026-07-30T10:21:02.351Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -4632,6 +4632,7 @@
     "2026-07-20",
     "2026-07-27",
     "2026-07-28",
-    "2026-07-29"
+    "2026-07-29",
+    "2026-07-30"
   ]
 }
