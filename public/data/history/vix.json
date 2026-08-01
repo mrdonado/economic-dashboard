@@ -7,7 +7,7 @@
     "symbol": "^VIX",
     "unit": "index points"
   },
-  "generatedAt": "2026-07-31T10:34:19.133Z",
+  "generatedAt": "2026-08-01T09:54:07.173Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2830,6 +2830,7 @@
     "1989-09-01",
     "1989-10-01",
     "1989-11-01",
-    "1989-12-01"
+    "1989-12-01",
+    "2026-08-01"
   ]
 }
