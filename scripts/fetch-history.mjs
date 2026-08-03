@@ -106,7 +106,9 @@ function yearOverYear(points) {
 }
 
 function validValueFor(series, value) {
-  return Number.isFinite(value) && (series.minExclusive === undefined || value > series.minExclusive)
+  return Number.isFinite(value)
+    && (series.allowZero === true || value !== 0)
+    && (series.minExclusive === undefined || value > series.minExclusive)
 }
 
 async function fredObservations(series, from) {
@@ -152,11 +154,11 @@ async function alternativeMeObservations(_symbol, from) {
   })).filter((point) => point.date >= from && Number.isFinite(point.value))
 }
 
-function compact(observations, missing) {
+function compact(series, observations, missing) {
   const newestValueByBucket = new Map()
   for (const point of observations) {
     const bucket = bucketFor(new Date(`${point.date}T00:00:00Z`))
-    if (missing.has(bucket)) newestValueByBucket.set(bucket, point)
+    if (missing.has(bucket) && validValueFor(series, point.value)) newestValueByBucket.set(bucket, point)
   }
   return newestValueByBucket
 }
@@ -184,7 +186,7 @@ async function updateSeries(series) {
     : series.source === 'fred' ? await fredObservations(series, from)
       : series.source === 'alternative-me' ? await alternativeMeObservations(series.symbol, from)
         : await eiaObservations(series.symbol, from)
-  const found = compact(observed, missing)
+  const found = compact(series, observed, missing)
   for (const [bucket, point] of found) points.set(bucket, { date: bucket, value: point.value, observedAt: point.date })
   for (const bucket of missing) if (!found.has(bucket)) unavailable.add(bucket)
 

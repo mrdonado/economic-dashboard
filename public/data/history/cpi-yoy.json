@@ -8,7 +8,7 @@
     "unit": "percent",
     "transform": "yoy"
   },
-  "generatedAt": "2026-08-03T18:52:36.292Z",
+  "generatedAt": "2026-08-03T19:12:55.652Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -289,11 +289,6 @@
       "date": "1954-07-01",
       "value": 0.26129152668905586,
       "observedAt": "1954-07-01"
-    },
-    {
-      "date": "1954-08-01",
-      "value": 0,
-      "observedAt": "1954-08-01"
     },
     {
       "date": "1954-09-01",
@@ -4607,6 +4602,7 @@
     }
   ],
   "unavailableBuckets": [
+    "1954-08-01",
     "2026-01-05",
     "2026-01-12",
     "2026-01-19",

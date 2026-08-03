@@ -7,7 +7,7 @@
     "symbol": "UNRATE",
     "unit": "percent"
   },
-  "generatedAt": "2026-08-03T18:52:36.836Z",
+  "generatedAt": "2026-08-03T19:12:56.273Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -4560,11 +4560,6 @@
       "observedAt": "2025-09-01"
     },
     {
-      "date": "2025-10-01",
-      "value": 0,
-      "observedAt": "2025-10-01"
-    },
-    {
       "date": "2025-11-01",
       "value": 4.5,
       "observedAt": "2025-11-01"
@@ -4606,6 +4601,7 @@
     }
   ],
   "unavailableBuckets": [
+    "2025-10-01",
     "2026-01-05",
     "2026-01-12",
     "2026-01-19",
