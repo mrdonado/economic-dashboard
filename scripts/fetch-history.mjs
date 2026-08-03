@@ -88,9 +88,11 @@ async function yahooObservations(symbol, from) {
   if (!response.ok) throw new Error(`Yahoo request failed (${response.status}) for ${symbol}`)
   const chart = (await response.json()).chart.result?.[0]
   if (!chart) throw new Error(`Yahoo returned no chart data for ${symbol}`)
-  return chart.timestamp.map((timestamp, index) => ({
+  const timestamps = chart.timestamp ?? []
+  const closeValues = chart.indicators?.quote?.[0]?.close ?? []
+  return timestamps.map((timestamp, index) => ({
     date: isoDate(new Date(timestamp * 1000)),
-    value: chart.indicators.quote[0].close[index],
+    value: closeValues[index],
   })).filter((point) => Number.isFinite(point.value))
 }
 
