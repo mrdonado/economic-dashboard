@@ -7,7 +7,7 @@
     "symbol": "^GSPC",
     "unit": "index points"
   },
-  "generatedAt": "2026-08-03T18:52:25.266Z",
+  "generatedAt": "2026-08-04T10:32:36.387Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -4748,6 +4748,7 @@
   "unavailableBuckets": [
     "2026-07-30",
     "2026-07-31",
-    "2026-08-01"
+    "2026-08-01",
+    "2026-08-04"
   ]
 }
