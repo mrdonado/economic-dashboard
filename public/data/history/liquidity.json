@@ -7,7 +7,7 @@
     "symbol": "M2SL",
     "unit": "billions USD"
   },
-  "generatedAt": "2026-08-04T10:32:38.385Z",
+  "generatedAt": "2026-08-06T10:34:09.680Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -4201,6 +4201,8 @@
     "2026-07-31",
     "2026-08-01",
     "2026-08-03",
-    "2026-08-04"
+    "2026-08-04",
+    "2026-08-05",
+    "2026-08-06"
   ]
 }

@@ -7,7 +7,7 @@
     "symbol": "DX-Y.NYB",
     "unit": "index points"
   },
-  "generatedAt": "2026-08-04T10:32:36.495Z",
+  "generatedAt": "2026-08-06T10:34:08.512Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -3498,6 +3498,16 @@
       "date": "2026-08-04",
       "value": 100.00800323486328,
       "observedAt": "2026-08-04"
+    },
+    {
+      "date": "2026-08-05",
+      "value": 99.69000244140625,
+      "observedAt": "2026-08-05"
+    },
+    {
+      "date": "2026-08-06",
+      "value": 99.78299713134766,
+      "observedAt": "2026-08-06"
     }
   ],
   "unavailableBuckets": [
