@@ -7,7 +7,7 @@
     "symbol": "BZ=F",
     "unit": "USD/barrel"
   },
-  "generatedAt": "2026-08-07T08:53:12.778Z",
+  "generatedAt": "2026-08-08T08:34:32.328Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2016,6 +2016,7 @@
     "2007-04-01",
     "2007-05-01",
     "2007-06-01",
-    "2026-08-01"
+    "2026-08-01",
+    "2026-08-08"
   ]
 }
