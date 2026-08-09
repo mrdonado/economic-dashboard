@@ -7,7 +7,7 @@
     "symbol": "DX-Y.NYB",
     "unit": "index points"
   },
-  "generatedAt": "2026-08-08T08:34:32.708Z",
+  "generatedAt": "2026-08-09T08:36:16.678Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -3769,6 +3769,7 @@
     "1970-11-01",
     "1970-12-01",
     "2026-08-01",
-    "2026-08-08"
+    "2026-08-08",
+    "2026-08-09"
   ]
 }
