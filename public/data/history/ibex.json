@@ -7,7 +7,7 @@
     "symbol": "^IBEX",
     "unit": "index points"
   },
-  "generatedAt": "2026-08-28T19:50:37.598Z",
+  "generatedAt": "2026-08-29T13:33:12.666Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2769,6 +2769,7 @@
     "2026-08-15",
     "2026-08-16",
     "2026-08-22",
-    "2026-08-23"
+    "2026-08-23",
+    "2026-08-29"
   ]
 }
