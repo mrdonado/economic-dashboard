@@ -7,7 +7,7 @@
     "symbol": "BAMLH0A0HYM2",
     "unit": "percentage points"
   },
-  "generatedAt": "2026-09-12T11:55:42.574Z",
+  "generatedAt": "2026-09-13T13:04:06.202Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -1248,6 +1248,7 @@
     "2026-09-09",
     "2026-09-10",
     "2026-09-11",
-    "2026-09-12"
+    "2026-09-12",
+    "2026-09-13"
   ]
 }

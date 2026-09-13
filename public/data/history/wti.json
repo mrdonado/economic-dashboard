@@ -7,7 +7,7 @@
     "symbol": "CL=F",
     "unit": "USD/barrel"
   },
-  "generatedAt": "2026-09-12T11:55:35.789Z",
+  "generatedAt": "2026-09-13T13:03:57.672Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2484,6 +2484,7 @@
     "2026-08-30",
     "2026-09-05",
     "2026-09-06",
-    "2026-09-12"
+    "2026-09-12",
+    "2026-09-13"
   ]
 }
