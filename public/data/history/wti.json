@@ -7,7 +7,7 @@
     "symbol": "CL=F",
     "unit": "USD/barrel"
   },
-  "generatedAt": "2026-09-15T13:04:37.039Z",
+  "generatedAt": "2026-09-16T13:01:52.982Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -1873,6 +1873,11 @@
       "date": "2026-09-15",
       "value": 101.5199966430664,
       "observedAt": "2026-09-15"
+    },
+    {
+      "date": "2026-09-16",
+      "value": 103.80000305175781,
+      "observedAt": "2026-09-16"
     }
   ],
   "unavailableBuckets": [
