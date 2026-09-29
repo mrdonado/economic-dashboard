@@ -7,7 +7,7 @@
     "symbol": "BTC-USD",
     "unit": "USD"
   },
-  "generatedAt": "2026-09-28T16:23:28.209Z",
+  "generatedAt": "2026-09-29T14:33:17.715Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -1158,6 +1158,11 @@
       "date": "2026-09-28",
       "value": 83725.0078125,
       "observedAt": "2026-09-28"
+    },
+    {
+      "date": "2026-09-29",
+      "value": 83952.6015625,
+      "observedAt": "2026-09-29"
     }
   ],
   "unavailableBuckets": [
