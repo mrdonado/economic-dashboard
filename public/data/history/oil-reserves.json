@@ -7,7 +7,7 @@
     "symbol": "WCSSTUS1",
     "unit": "million barrels"
   },
-  "generatedAt": "2026-10-04T13:37:51.736Z",
+  "generatedAt": "2026-10-05T16:43:51.877Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -3226,6 +3226,7 @@
     "2026-10-01",
     "2026-10-02",
     "2026-10-03",
-    "2026-10-04"
+    "2026-10-04",
+    "2026-10-05"
   ]
 }

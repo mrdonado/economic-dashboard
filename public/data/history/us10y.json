@@ -8,7 +8,7 @@
     "unit": "percent",
     "minExclusive": 0
   },
-  "generatedAt": "2026-10-04T13:37:47.583Z",
+  "generatedAt": "2026-10-05T16:43:44.504Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -4219,6 +4219,7 @@
     "2026-10-01",
     "2026-10-02",
     "2026-10-03",
-    "2026-10-04"
+    "2026-10-04",
+    "2026-10-05"
   ]
 }
