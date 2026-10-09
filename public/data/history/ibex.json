@@ -7,7 +7,7 @@
     "symbol": "^IBEX",
     "unit": "index points"
   },
-  "generatedAt": "2026-10-08T15:09:33.704Z",
+  "generatedAt": "2026-10-09T14:54:21.901Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2383,6 +2383,11 @@
       "date": "2026-10-08",
       "value": 19016.900390625,
       "observedAt": "2026-10-08"
+    },
+    {
+      "date": "2026-10-09",
+      "value": 19095.30078125,
+      "observedAt": "2026-10-09"
     }
   ],
   "unavailableBuckets": [
