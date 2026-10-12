@@ -7,7 +7,7 @@
     "symbol": "^NDX",
     "unit": "index points"
   },
-  "generatedAt": "2026-10-10T14:09:51.615Z",
+  "generatedAt": "2026-10-12T17:16:38.155Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2678,6 +2678,11 @@
       "date": "2026-10-09",
       "value": 30850.5703125,
       "observedAt": "2026-10-09"
+    },
+    {
+      "date": "2026-10-12",
+      "value": 30666.841796875,
+      "observedAt": "2026-10-12"
     }
   ],
   "unavailableBuckets": [
