@@ -7,7 +7,7 @@
     "symbol": "T10Y2Y",
     "unit": "percentage points"
   },
-  "generatedAt": "2026-10-14T13:16:04.339Z",
+  "generatedAt": "2026-10-16T12:58:21.010Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -3148,6 +3148,11 @@
       "date": "2026-08-05",
       "value": 0.45,
       "observedAt": "2026-08-05"
+    },
+    {
+      "date": "2026-10-15",
+      "value": 0.33,
+      "observedAt": "2026-10-15"
     }
   ],
   "unavailableBuckets": [
@@ -3543,6 +3548,7 @@
     "2026-10-10",
     "2026-10-12",
     "2026-10-13",
-    "2026-10-14"
+    "2026-10-14",
+    "2026-10-16"
   ]
 }

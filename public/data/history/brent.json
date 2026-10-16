@@ -7,7 +7,7 @@
     "symbol": "BZ=F",
     "unit": "USD/barrel"
   },
-  "generatedAt": "2026-10-14T13:15:56.198Z",
+  "generatedAt": "2026-10-16T12:58:13.026Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -1563,6 +1563,16 @@
       "date": "2026-10-14",
       "value": 105.5999984741211,
       "observedAt": "2026-10-14"
+    },
+    {
+      "date": "2026-10-15",
+      "value": 105.91999816894531,
+      "observedAt": "2026-10-15"
+    },
+    {
+      "date": "2026-10-16",
+      "value": 105.9000015258789,
+      "observedAt": "2026-10-16"
     }
   ],
   "unavailableBuckets": [
