@@ -7,7 +7,7 @@
     "symbol": "^GSPC",
     "unit": "index points"
   },
-  "generatedAt": "2026-10-21T13:22:34.790Z",
+  "generatedAt": "2026-10-22T13:23:16.574Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -4904,6 +4904,7 @@
     "2026-10-14",
     "2026-10-16",
     "2026-10-20",
-    "2026-10-21"
+    "2026-10-21",
+    "2026-10-22"
   ]
 }
