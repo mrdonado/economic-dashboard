@@ -7,7 +7,7 @@
     "symbol": "^GDAXI",
     "unit": "index points"
   },
-  "generatedAt": "2026-10-30T14:46:19.050Z",
+  "generatedAt": "2026-10-31T14:14:29.576Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -3277,6 +3277,7 @@
     "2026-10-04",
     "2026-10-10",
     "2026-10-24",
-    "2026-10-25"
+    "2026-10-25",
+    "2026-10-31"
   ]
 }

@@ -7,7 +7,7 @@
     "symbol": "^N225",
     "unit": "index points"
   },
-  "generatedAt": "2026-10-30T14:46:18.974Z",
+  "generatedAt": "2026-10-31T14:14:29.539Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -4349,6 +4349,7 @@
     "2026-10-10",
     "2026-10-12",
     "2026-10-24",
-    "2026-10-25"
+    "2026-10-25",
+    "2026-10-31"
   ]
 }
