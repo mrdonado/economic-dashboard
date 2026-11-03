@@ -7,7 +7,7 @@
     "symbol": "FNG",
     "unit": "0-100 index"
   },
-  "generatedAt": "2026-11-02T17:43:26.924Z",
+  "generatedAt": "2026-11-03T15:45:09.324Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -1113,6 +1113,11 @@
       "date": "2026-11-02",
       "value": 37,
       "observedAt": "2026-11-02"
+    },
+    {
+      "date": "2026-11-03",
+      "value": 26,
+      "observedAt": "2026-11-03"
     }
   ],
   "unavailableBuckets": [
