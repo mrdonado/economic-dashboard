@@ -7,7 +7,7 @@
     "symbol": "HG=F",
     "unit": "USD/pound"
   },
-  "generatedAt": "2026-11-15T15:14:26.753Z",
+  "generatedAt": "2026-11-16T17:49:49.270Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2088,6 +2088,11 @@
       "date": "2026-11-13",
       "value": 6.113999843597412,
       "observedAt": "2026-11-13"
+    },
+    {
+      "date": "2026-11-16",
+      "value": 6.012499809265137,
+      "observedAt": "2026-11-16"
     }
   ],
   "unavailableBuckets": [
