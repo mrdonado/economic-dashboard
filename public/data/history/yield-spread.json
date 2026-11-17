@@ -7,7 +7,7 @@
     "symbol": "T10Y2Y",
     "unit": "percentage points"
   },
-  "generatedAt": "2026-11-16T17:49:54.015Z",
+  "generatedAt": "2026-11-17T17:18:57.632Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -3582,6 +3582,7 @@
     "2026-11-13",
     "2026-11-14",
     "2026-11-15",
-    "2026-11-16"
+    "2026-11-16",
+    "2026-11-17"
   ]
 }
