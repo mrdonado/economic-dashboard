@@ -7,7 +7,7 @@
     "symbol": "^N225",
     "unit": "index points"
   },
-  "generatedAt": "2026-11-18T16:53:32.422Z",
+  "generatedAt": "2026-11-19T16:59:48.597Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -4193,6 +4193,11 @@
       "date": "2026-11-18",
       "value": 59024.28125,
       "observedAt": "2026-11-18"
+    },
+    {
+      "date": "2026-11-19",
+      "value": 59444.2109375,
+      "observedAt": "2026-11-19"
     }
   ],
   "unavailableBuckets": [
