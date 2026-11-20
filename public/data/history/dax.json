@@ -7,7 +7,7 @@
     "symbol": "^GDAXI",
     "unit": "index points"
   },
-  "generatedAt": "2026-11-19T16:59:48.650Z",
+  "generatedAt": "2026-11-20T16:37:55.366Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2868,6 +2868,11 @@
       "date": "2026-11-19",
       "value": 25463.810546875,
       "observedAt": "2026-11-19"
+    },
+    {
+      "date": "2026-11-20",
+      "value": 24864.7109375,
+      "observedAt": "2026-11-20"
     }
   ],
   "unavailableBuckets": [
