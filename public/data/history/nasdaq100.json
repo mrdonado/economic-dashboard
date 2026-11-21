@@ -7,7 +7,7 @@
     "symbol": "^NDX",
     "unit": "index points"
   },
-  "generatedAt": "2026-11-20T16:37:55.053Z",
+  "generatedAt": "2026-11-21T15:52:11.514Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -3298,6 +3298,7 @@
     "2026-11-07",
     "2026-11-08",
     "2026-11-14",
-    "2026-11-15"
+    "2026-11-15",
+    "2026-11-21"
   ]
 }
