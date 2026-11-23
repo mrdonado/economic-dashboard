@@ -7,7 +7,7 @@
     "symbol": "^VIX",
     "unit": "index points"
   },
-  "generatedAt": "2026-11-22T15:51:37.538Z",
+  "generatedAt": "2026-11-23T19:45:40.271Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2748,6 +2748,11 @@
       "date": "2026-11-20",
       "value": 29.989999771118164,
       "observedAt": "2026-11-20"
+    },
+    {
+      "date": "2026-11-23",
+      "value": 26.600000381469727,
+      "observedAt": "2026-11-23"
     }
   ],
   "unavailableBuckets": [
