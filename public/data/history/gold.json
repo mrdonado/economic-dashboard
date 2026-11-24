@@ -7,7 +7,7 @@
     "symbol": "GC=F",
     "unit": "USD/troy ounce"
   },
-  "generatedAt": "2026-11-23T19:45:39.824Z",
+  "generatedAt": "2026-11-24T19:16:41.675Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2118,6 +2118,11 @@
       "date": "2026-11-23",
       "value": 3648.199951171875,
       "observedAt": "2026-11-23"
+    },
+    {
+      "date": "2026-11-24",
+      "value": 3561.10009765625,
+      "observedAt": "2026-11-24"
     }
   ],
   "unavailableBuckets": [
