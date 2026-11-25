@@ -7,7 +7,7 @@
     "symbol": "^GSPC",
     "unit": "index points"
   },
-  "generatedAt": "2026-11-24T19:16:41.931Z",
+  "generatedAt": "2026-11-25T18:21:45.351Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -4953,6 +4953,11 @@
       "date": "2026-11-24",
       "value": 7208.240234375,
       "observedAt": "2026-11-24"
+    },
+    {
+      "date": "2026-11-25",
+      "value": 7158.490234375,
+      "observedAt": "2026-11-25"
     }
   ],
   "unavailableBuckets": [
