@@ -7,7 +7,7 @@
     "symbol": "HG=F",
     "unit": "USD/pound"
   },
-  "generatedAt": "2026-11-27T17:47:20.977Z",
+  "generatedAt": "2026-11-28T16:34:33.814Z",
   "resolution": {
     "beforeCurrentYear": "monthly",
     "currentYear": "weekly",
@@ -2773,6 +2773,7 @@
     "2026-11-15",
     "2026-11-21",
     "2026-11-22",
-    "2026-11-26"
+    "2026-11-26",
+    "2026-11-28"
   ]
 }
